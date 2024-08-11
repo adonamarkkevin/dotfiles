@@ -21,10 +21,32 @@ exec --no-startup-id feh --bg-scale ~/backgrounds/river-lightdrifter.jpg
 exec_always killall polybar
 exec_always --no-startup-id "sh ~/.config/polybar/launch_polybar.sh"
 
+# Assign workspaces to specific applications
+# assign [class="Alacritty"] 1
+# assign [class="Brave-browser"] 2
+# assign [class="Google-chrome"] 3
+# assign [class="Slack"] 4
+# assign [class="Spotify"] 5
+
+# Open Alacritty in workspace 1
+# exec --no-startup-id i3-msg "workspace 1; exec alacritty"
+
+# Open Brave in workspace 2
+# exec --no-startup-id i3-msg "workspace 2; exec brave"
+
+# Open Google Chrome in workspace 3
+# exec --no-startup-id i3-msg "workspace 3; exec google-chrome-stable"
+
+# Open Slack in workspace 4
+# exec --no-startup-id i3-msg "workspace 4; exec com.slack.Slack"
+
+# Open Spotify in workspace 5
+# exec --no-startup-id i3-msg "workspace 5; exec spotify"
+
 bindsym Print exec maim "/home/$USER/Pictures/$(date).jpg"
 bindsym $mod+Print exec maim --window $(xdotool getactivewindow) "/home/$USER/Pictures/$(date).jpg"
 bindsym Shift+Print exec maim --select "/home/$USER/Pictures/$(date).jpg"
-bindsym $mod+Escape exec --no-startup-id i3-msg exit
+bindsym $mod+Escape exec --no-startup-id i3lock
 
 ## Clipboard Screenshots
 bindsym Ctrl+Print exec maim | xclip -selection clipboard -t image/png
