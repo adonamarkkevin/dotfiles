@@ -28,3 +28,6 @@
 [submodule ".config/tmux/tmux-continuum"]
 	path = .config/tmux/plugins/tmux-continuum
 	url = https://github.com/tmux-plugins/tmux-continuum.git
+[submodule "pass-store"]
+	path = pass-store
+	url = https://github.com/adonamarkkevin/pass-store.git
