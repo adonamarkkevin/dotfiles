@@ -1,0 +1,8 @@
+[user]
+	email = adonamarkkevin@gmail.com
+	name = Mark Kevin Adona
+    username = adonamarkkevin
+[pull]
+    rebase = true
+[core]
+    editor = nvim
