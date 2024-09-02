@@ -29,5 +29,5 @@
 	path = .config/tmux/plugins/tmux-continuum
 	url = https://github.com/tmux-plugins/tmux-continuum.git
 [submodule "pass-store"]
-	path = pass-store
+	path = .password-store
 	url = https://github.com/adonamarkkevin/pass-store.git
