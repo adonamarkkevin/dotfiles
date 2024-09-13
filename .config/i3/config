@@ -57,8 +57,8 @@ bindsym $mod+Escape exec --no-startup-id "sh ~/dotfiles/.config/i3/lock_screen.s
 
 ## Clipboard Screenshots
 bindsym Print exec maim | xclip -selection clipboard -t image/png
-bindsym Ctrl+Shift+Print exec maim --window $(xdotool getactivewindow) | xclip -selection clipboard -t image/png
-bindsym Ctrl+Print exec maim --select | xclip -selection clipboard -t image/png
+bindsym Ctrl+Print exec maim --window $(xdotool getactivewindow) | xclip -selection clipboard -t image/png
+bindsym Ctrl+Shift+Print exec maim -o --select | xclip -selection clipboard -t image/png
 
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below.
@@ -96,7 +96,7 @@ bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl set 5%-
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+t exec alacritty
+bindsym $mod+t exec kitty
 
 # kill focused window
 bindsym $mod+Shift+q kill
