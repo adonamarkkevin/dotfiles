@@ -77,7 +77,7 @@ exec --no-startup-id dex --autostart --environment i3
 
 # xss-lock grabs a logind suspend inhibit lock and will use i3lock to lock the
 # screen before suspend. Use loginctl lock-session to lock your screen.
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock --nofork
+exec --no-startup-id xss-lock --transfer-sleep-lock -- sh ~/dotfiles/.config/i3/lock_screen.sh
 
 # NetworkManager is the most popular way to manage wireless networks on Linux,
 # and nm-applet is a desktop environment-independent system tray GUI for it.
@@ -246,37 +246,27 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 
-set $rosewater #f5e0dc
-set $flamingo  #f2cdcd
-set $pink      #f5c2e7
-set $mauve     #cba6f7
-set $red       #f38ba8
-set $maroon    #eba0ac
-set $peach     #fab387
-set $yellow    #f9e2af
-set $green     #a6e3a1
-set $teal      #94e2d5
-set $sky       #89dceb
-set $sapphire  #74c7ec
-set $blue      #89b4fa
-set $lavender  #b4befe
-set $text      #cdd6f4
-set $subtext1  #bac2de
-set $subtext0  #a6adc8
-set $overlay2  #9399b2
-set $overlay1  #7f849c
-set $overlay0  #6c7086
-set $surface2  #585b70
-set $surface1  #45475a
-set $surface0  #313244
-set $base      #1e1e2e
-set $mantle    #181825
-set $crust     #11111b
+# Kanagawa color palette
+set $fujiWhite    #DCD7BA
+set $sakuraPink   #D27E99
+set $samuraiRed   #E46876
+set $autumnYellow #E6C384
+set $teaGreen     #98BB6C
+set $waveBlue     #7E9CD8
+set $winterNight  #2A2A37
+set $mountainBase #1F1F28
+set $stormGray    #54546D
+set $riverGray    #717C7C
+set $deepWater    #363646
+set $shadowBase   #090618
 
-# target                 title     bg    text      indicator    border
-client.focused           $mantle   $mauve $mantle  $rosewater $mauve
-client.focused_inactive  $overlay0 $base  $text    $rosewater $overlay0
-client.unfocused         $overlay0 $base  $text    $rosewater $overlay0
-client.urgent            $peach    $base  $peach   $overlay0  $peach
-client.placeholder       $overlay0 $base  $text    $overlay0  $overlay0
-client.background        $base
+# Kanagawa theme applied to i3 components
+
+# Target                 Title       Background   Text         Indicator    Border
+client.focused           $winterNight $waveBlue    $mountainBase $fujiWhite   $waveBlue
+client.focused_inactive  $stormGray   $mountainBase $fujiWhite   $fujiWhite   $stormGray
+client.unfocused         $stormGray   $mountainBase $fujiWhite   $fujiWhite   $stormGray
+client.urgent            $samuraiRed  $mountainBase $samuraiRed  $stormGray   $samuraiRed
+client.placeholder       $stormGray   $mountainBase $fujiWhite   $stormGray   $stormGray
+client.background        $mountainBase
+

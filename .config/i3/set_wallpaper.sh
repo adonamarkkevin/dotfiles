@@ -6,7 +6,7 @@ desktop_hostname="archlinux"
 laptop_hostname="archbtw"
 
 if [ "$hostname" = "$desktop_hostname" ]; then
-  feh --bg-scale ~/backgrounds/1440pastronaut.png
+  feh --bg-scale ~/backgrounds/kanagawa.png
 elif [ "$hostname" = "$laptop_hostname" ]; then
   feh --bg-scale ~/backgrounds/1080p-astronaut.png
 fi
