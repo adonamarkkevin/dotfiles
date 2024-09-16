@@ -259,14 +259,15 @@ set $stormGray    #54546D
 set $riverGray    #717C7C
 set $deepWater    #363646
 set $shadowBase   #090618
+set $abyssBlack   #000000
 
 # Kanagawa theme applied to i3 components
 
 # Target                 Title       Background   Text         Indicator    Border
-client.focused           $winterNight $waveBlue    $mountainBase $fujiWhite   $waveBlue
-client.focused_inactive  $stormGray   $mountainBase $fujiWhite   $fujiWhite   $stormGray
-client.unfocused         $stormGray   $mountainBase $fujiWhite   $fujiWhite   $stormGray
+client.focused           $winterNight $abyssBlack $autumnYellow $fujiWhite $riverGray
+client.focused_inactive  $stormGray   $abyssBlack $fujiWhite   $fujiWhite   $winterNight
+client.unfocused         $stormGray   $abyssBlack $fujiWhite   $fujiWhite   $winterNight
 client.urgent            $samuraiRed  $mountainBase $samuraiRed  $stormGray   $samuraiRed
-client.placeholder       $stormGray   $mountainBase $fujiWhite   $stormGray   $stormGray
-client.background        $mountainBase
+client.placeholder       $stormGray   $mountainBase $fujiWhite   $stormGray   $winterNight
+client.background        $abyssBlack
 
