@@ -1,19 +1,19 @@
 * {
-    bg-col:  #1e1e2e;
-    bg-col-light: #1e1e2e;
-    border-col: #1e1e2e;
-    selected-col: #1e1e2e;
-    blue: #89b4fa;
-    fg-col: #cdd6f4;
-    fg-col2: #f38ba8;
-    grey: #6c7086;
+    bg-col: #000000;
+    bg-col-light: #2a2a2a;
+    border-col: #2a2a2a;
+    selected-col: #424242;
+    autumn-yellow: #DCA561;
+    fg-col: #eaeaea;
+    fg-col2: #f99157;
+    grey: #969896;
     width: 600;
     font: "JetBrainsMono Nerd Font 18";
 }
 
-element-text, element-icon , mode-switcher {
+element-text, element-icon, mode-switcher {
     background-color: inherit;
-    text-color:       inherit;
+    text-color: inherit;
 }
 
 window {
@@ -28,14 +28,14 @@ mainbox {
 }
 
 inputbar {
-    children: [prompt,entry];
+    children: [prompt, entry];
     background-color: @bg-col;
     border-radius: 5px;
     padding: 2px;
 }
 
 prompt {
-    background-color: @blue;
+    background-color: @autumn-yellow;
     padding: 6px;
     text-color: @bg-col;
     border-radius: 3px;
@@ -66,7 +66,7 @@ listview {
 element {
     padding: 5px;
     background-color: @bg-col;
-    text-color: @fg-col  ;
+    text-color: @fg-col;
 }
 
 element-icon {
@@ -74,25 +74,25 @@ element-icon {
 }
 
 element selected {
-    background-color:  @selected-col ;
-    text-color: @fg-col2  ;
+    background-color: @selected-col;
+    text-color: @fg-col2;
 }
 
 mode-switcher {
     spacing: 0;
-  }
+}
 
 button {
     padding: 10px;
     background-color: @bg-col-light;
     text-color: @grey;
-    vertical-align: 0.5; 
+    vertical-align: 0.5;
     horizontal-align: 0.5;
 }
 
 button selected {
-  background-color: @bg-col;
-  text-color: @blue;
+    background-color: @bg-col;
+    text-color: @autumn-yellow;
 }
 
 message {
@@ -105,6 +105,6 @@ message {
 textbox {
     padding: 6px;
     margin: 20px 0px 0px 20px;
-    text-color: @blue;
+    text-color: @autumn-yellow;
     background-color: @bg-col-light;
 }
