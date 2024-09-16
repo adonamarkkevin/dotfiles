@@ -16,7 +16,7 @@ set $mod Mod4
 
 # Set gaps
 gaps inner 10
-gaps outer 21
+gaps outer 30
 
 # Set workspaces
 exec --no-startup-id "sh ~/dotfiles/.config/i3/set_workspace.sh"
