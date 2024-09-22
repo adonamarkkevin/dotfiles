@@ -11,6 +11,9 @@ fi
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
+export PATH=$PATH:/.nvm/versions/node/v20.17.0/bin
+export PATH="$HOME/.local/share/nvim/mason/bin:$PATH"
+
 ZSH_THEME="steeef"
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
