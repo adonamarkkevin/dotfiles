@@ -13,6 +13,8 @@ monitor2="DP-1"
 laptop_monitor="eDP-1"
 
 if [ "$hostname" = "$desktop_hostname" ]; then
+    xrandr --output HDMI-0 --primary --left-of DP-1
+
     # Desktop configuration
     i3-msg "workspace 1 output $monitor1"
     i3-msg "workspace 2 output $monitor1"
