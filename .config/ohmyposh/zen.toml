@@ -10,22 +10,22 @@ console_title_template = '{{ .Shell }} in {{ .Folder }}'
     type = 'os'
     style = 'plain'
     background = 'transparent'
-    foreground = '#CC7832'  # Red (same as error)
+    foreground = '#6897BB'
     template = '{{ if .WSL }}WSL at {{ end }}{{.Icon}} '
   [[blocks.segments]]
     type = 'path'
     style = 'plain'
     background = 'transparent'
-    foreground = '#CC7832'  # Orange-red
+    foreground = '#B57EDC'
     template = '{{ .Path }}'
     [blocks.segments.properties]
       style = 'full'
   [[blocks.segments]]
     type = 'git'
     style = 'plain'
-    foreground = '#B57EDC'  # Green
+    foreground = '#CC7832'
     background = 'transparent'
-    template = ' {{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed) }}*{{ end }} <#6897BB>{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end }}</>'  # Light blue for arrows
+    template = ' {{ .HEAD }}{{ if or (.Working.Changed) (.Staging.Changed) }}*{{ end }} <#6897BB>{{ if gt .Behind 0 }}⇣{{ end }}{{ if gt .Ahead 0 }}⇡{{ end }}</>'
     [blocks.segments.properties]
       branch_icon = ''
       commit_icon = '@'
@@ -37,7 +37,7 @@ console_title_template = '{{ .Shell }} in {{ .Folder }}'
   [[blocks.segments]]
     type = 'executiontime'
     style = 'plain'
-    foreground = '#FFC66D'  # Orange
+    foreground = '#FFC66D'
     background = 'transparent'
     template = '{{ .FormattedMs }}'
     [blocks.segments.properties]
@@ -51,21 +51,21 @@ console_title_template = '{{ .Shell }} in {{ .Folder }}'
     type = 'text'
     style = 'plain'
     foreground_templates = [
-      "{{if gt .Code 0}}#FF6B68{{end}}",  # Red for errors
-      "{{if eq .Code 0}}#B57EDC{{end}}",  # Lavender for success
+      "{{if gt .Code 0}}#FF6B68{{end}}",
+      "{{if eq .Code 0}}#6897BB{{end}}",
     ]
     background = 'transparent'
     template = '❯'
 
 [transient_prompt]
   foreground_templates = [
-    "{{if gt .Code 0}}#FF6B68{{end}}",  # Red for errors
-    "{{if eq .Code 0}}#B57EDC{{end}}",  # Lavender for success
+    "{{if gt .Code 0}}#FF6B68{{end}}",
+    "{{if eq .Code 0}}#6897BB{{end}}",
   ]
   background = 'transparent'
   template = '❯ '
 
 [secondary_prompt]
-  foreground = '#B57EDC'  # Lavender
+  foreground = '#6897BB'
   background = 'transparent'
   template = '❯❯ '
