@@ -106,7 +106,9 @@ source $ZSH/oh-my-zsh.sh
 alias vim=nvim
 
 # Bind keys
-bindkey -s '^T' 'tmux a -t '
+bindkey '^F' fzf-file-widget
+bindkey '^V' fzf-cd-widget
+
 
 eval "$(oh-my-posh init zsh --config $HOME/dotfiles/.config/ohmyposh/zen.toml)"
 
@@ -118,3 +120,63 @@ export NVM_DIR="$HOME/.nvm"
 # Go PATH
 export PATH=$PATH:/usr/local/go/bin
 PATH="$HOME/.local/bin:$PATH"
+
+# fzf key binding
+eval "$(fzf --zsh)"
+
+export FZF_DEFAULT_COMMAND="fd --hidden --strip-cwd-prefix --exclude .git"
+export FZF_CTRL_T_COMMAND="$FZF_DEFAULT_COMMAND"
+export FZF_ALT_C_COMMAND="fd --type=d --hidden --strip-cwd-prefix --exclude .git"
+
+
+# Use fd (https://github.com/sharkdp/fd) for listing path candidate
+# - the first argument to the function ($1) is the base path to start pathing
+_fzf_compgen_path(){
+  fd --hidden --exclude .git . "$1"
+}
+
+_fzf_compgen_dir(){
+  fd --type=d --hidden --exclude .git . "$1"
+}
+
+source ~/dotfiles/fzf-git/fzf-git.sh
+
+show_file_or_dir_preview="if [ -d {} ]; then eza --tree --color=always {} | head -200; else bat -n --color=always --line-range :500 {}; fi"
+
+export FZF_CTRL_T_OPTS="--preview '$show_file_or_dir_preview'"
+export FZF_ALT_C_OPTS="--preview 'eza --tree --color=always {} | head -200'"
+
+# Advanced customization of fzf options via _fzf_comprun function
+# - The first argument to the function is the name of the command.
+# - You should make sure to pass the rest of the arguments to fzf.
+_fzf_comprun() {
+  local command=$1
+  shift
+
+  case "$command" in
+    cd)           fzf --preview 'eza --tree --color=always {} | head -200' "$@" ;;
+    export|unset) fzf --preview "eval 'echo \${}'"         "$@" ;;
+    ssh)          fzf --preview 'dig {}'                   "$@" ;;
+    *)            fzf --preview "$show_file_or_dir_preview" "$@" ;;
+  esac
+}
+
+if [[ -n $TMUX ]]; then
+    # Force reload fzf keybindings inside tmux
+    source ~/dotfiles/fzf-git/fzf-git.sh
+
+    # Only rebind the ones that conflict with vim-tmux-navigator
+    bindkey "^Gh" fzf-git-hashes-widget    # Changed from ^G^H
+    bindkey "^Gj" fzf-git-jumps-widget     # Changed from ^G^J if you have this binding
+    bindkey "^Gk" fzf-git-keybinds-widget  # Changed from ^G^K if you have this binding
+    bindkey "^Gl" fzf-git-lreflogs-widget  # Changed from ^G^L
+fi
+
+
+alias ls="eza --icons=always"
+eval $(thefuck --alias)
+
+# ---- Zoxide (better cd) ----
+eval "$(zoxide init zsh)"
+
+alias cd="z"

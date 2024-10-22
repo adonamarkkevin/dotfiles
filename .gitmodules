@@ -31,3 +31,6 @@
 [submodule ".password-store"]
 	path = .password-store
 	url = https://github.com/adonamarkkevin/pass-store.git
+[submodule "fzf-git"]
+	path = fzf-git
+	url = https://github.com/junegunn/fzf-git.sh.git
