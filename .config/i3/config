@@ -55,8 +55,6 @@ bindsym Shift+Print exec maim --select "/home/$USER/Pictures/$(date).jpg"
 # lock screen
 bindsym $mod+Escape exec --no-startup-id "sh ~/dotfiles/.config/i3/lock_screen.sh"
 
-# Suspend
-bindsym $mod+Shift+Escape exec systemctl suspend
 
 ## Clipboard Screenshots
 bindsym Print exec maim | xclip -selection clipboard -t image/png
@@ -110,7 +108,7 @@ bindsym $mod+Shift+q kill
 # start rofi (a program launcher)
 bindsym $mod+d exec --no-startup-id rofi -show drun
 bindsym $mod+space exec --no-startup-id rofi -show combi
-bindsym $mod+Tab exec --no-startup-id rofi -show window
+bindsym $mod+Shift+Tab exec --no-startup-id rofi -show window
 
 # change focus
 bindsym $mod+h focus left
