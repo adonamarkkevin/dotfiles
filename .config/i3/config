@@ -29,6 +29,9 @@ exec --no-startup-id "sh ~/swap_trackball_btn.sh"
 # Set background
 exec --no-startup-id "sh ~/dotfiles/.config/i3/set_wallpaper.sh"
 
+# Clean up neovim
+exec --no-startup-id "sh ~/dotfiles/.config/i3/cleanup_nvim.sh"
+
 # kill any hanging polybar processes
 exec_always killall polybar
 exec_always --no-startup-id "sh ~/.config/polybar/launch_polybar.sh"
