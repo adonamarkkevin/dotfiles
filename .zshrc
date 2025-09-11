@@ -180,3 +180,4 @@ eval $(thefuck --alias)
 eval "$(zoxide init zsh)"
 
 alias cd="z"
+export FIGLET_FONTDIR="/usr/share/figlet/fonts"
