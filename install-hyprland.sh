@@ -72,7 +72,7 @@ UTILITY_PACKAGES=(
 # Idle and lock screen
 IDLE_LOCK_PACKAGES=(
     "hypridle"
-    "swaylock-effects"
+    "swaylock"
     "polkit-gnome"
 )
 
@@ -177,6 +177,28 @@ if command -v nvm &> /dev/null; then
     log_success "Node.js v22 installed and set as default"
 else
     log_warning "NVM not available in current session. Please restart shell and run: nvm install 22"
+fi
+
+# ============================================================================
+# AUR PACKAGES (OPTIONAL)
+# ============================================================================
+
+log_info "Checking for AUR helper (yay)..."
+
+if command -v yay &> /dev/null; then
+    log_info "AUR helper found. Do you want to install swaylock-effects (enhanced lock screen)?"
+    read -p "Install swaylock-effects from AUR? (y/n) " -n 1 -r
+    echo
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        log_info "Installing swaylock-effects from AUR..."
+        yay -S --needed --noconfirm swaylock-effects
+        log_success "swaylock-effects installed"
+    else
+        log_info "Skipping swaylock-effects (using regular swaylock)"
+    fi
+else
+    log_warning "AUR helper (yay) not found. Using regular swaylock instead of swaylock-effects"
+    log_info "To install swaylock-effects later, run: yay -S swaylock-effects"
 fi
 
 # ============================================================================

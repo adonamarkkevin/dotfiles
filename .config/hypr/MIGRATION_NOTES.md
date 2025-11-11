@@ -12,7 +12,10 @@ sudo pacman -S hyprland hyprpaper waybar wofi
 sudo pacman -S grim slurp wl-clipboard
 
 # Idle management and screen locking
-sudo pacman -S hypridle swaylock-effects
+sudo pacman -S hypridle swaylock
+
+# Optional: Enhanced lock screen (AUR)
+yay -S swaylock-effects
 
 # Additional utilities
 sudo pacman -S brightnessctl networkmanager network-manager-applet polkit-gnome
