@@ -181,3 +181,4 @@ eval "$(zoxide init zsh)"
 
 alias cd="z"
 export FIGLET_FONTDIR="/usr/share/figlet/fonts"
+alias claudeyolo='claude --dangerously-skip-permissions'
