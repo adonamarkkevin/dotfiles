@@ -277,13 +277,41 @@ if [ -d "$DOTFILES_DIR/.git" ]; then
     cd "$DOTFILES_DIR"
     git submodule update --init --recursive
     log_success "Git submodules updated"
+
+    # Verify critical submodules
+    if [ ! -f "$DOTFILES_DIR/fzf-git/fzf-git.sh" ]; then
+        log_warning "fzf-git.sh not found, attempting to fix..."
+        git submodule update --init --recursive --force
+        if [ -f "$DOTFILES_DIR/fzf-git/fzf-git.sh" ]; then
+            log_success "fzf-git.sh submodule initialized"
+        else
+            log_error "Failed to initialize fzf-git submodule"
+            log_info "You may need to clone it manually:"
+            echo "  cd ~/dotfiles && git submodule update --init --recursive"
+        fi
+    else
+        log_success "fzf-git.sh submodule verified"
+    fi
+else
+    log_warning "Not a git repository. Submodules not initialized."
+    log_info "If you cloned without --recurse-submodules, run:"
+    echo "  cd ~/dotfiles && git submodule update --init --recursive"
 fi
 
 # Install oh-my-posh if not present
 if ! command -v oh-my-posh &> /dev/null; then
     log_info "Installing oh-my-posh..."
-    curl -s https://ohmyposh.dev/install.sh | bash -s
-    log_success "oh-my-posh installed"
+    curl -s https://ohmyposh.dev/install.sh | bash -s -- -d ~/.local/bin
+
+    # Add to PATH for current session
+    export PATH="$HOME/.local/bin:$PATH"
+
+    if command -v oh-my-posh &> /dev/null; then
+        log_success "oh-my-posh installed to ~/.local/bin"
+    else
+        log_error "oh-my-posh installation failed"
+        log_info "You can install it manually later: curl -s https://ohmyposh.dev/install.sh | bash -s"
+    fi
 else
     log_success "oh-my-posh already installed"
 fi
