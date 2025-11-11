@@ -11,12 +11,11 @@ sudo pacman -S hyprland hyprpaper waybar wofi
 # Screenshot tools (Wayland replacements for maim)
 sudo pacman -S grim slurp wl-clipboard
 
-# Additional utilities
-sudo pacman -S brightnessctl networkmanager network-manager-applet
+# Idle management and screen locking
+sudo pacman -S hypridle swaylock-effects
 
-# Optional but recommended
-sudo pacman -S swayidle swaylock-effects  # For screen locking and idle management
-sudo pacman -S polkit-gnome  # For GUI authentication prompts
+# Additional utilities
+sudo pacman -S brightnessctl networkmanager network-manager-applet polkit-gnome
 ```
 
 ## Key Differences from i3
@@ -43,9 +42,11 @@ sudo pacman -S polkit-gnome  # For GUI authentication prompts
    - Config at `~/.config/hypr/hyprpaper.conf`
    - See `HYPRPAPER_README.md` for details
 
-5. **Screen Locking**
-   - Your current `lock_screen.sh` likely uses `i3lock`
-   - Replace with `swaylock` or `swaylock-effects`
+5. **Screen Locking & Idle Management**
+   - **Old**: `i3lock` + `xss-lock` (X11)
+   - **New**: `swaylock` + `hypridle` (Wayland)
+   - Config at `~/.config/hypr/hypridle.conf` and `~/.config/hypr/swaylock.conf`
+   - Auto-locks after 10 minutes, dims at 5 minutes, screen off at 15 minutes
 
 ### What Stays the Same:
 

@@ -6,6 +6,9 @@
 # Set wallpaper with hyprpaper (Wayland alternative to feh)
 hyprpaper &
 
+# Start idle management (screen dimming, locking, sleep)
+hypridle &
+
 # Swap trackball buttons
 sh ~/swap_trackball_btn.sh &
 

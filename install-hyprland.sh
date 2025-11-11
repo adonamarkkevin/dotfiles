@@ -69,9 +69,9 @@ UTILITY_PACKAGES=(
     "htop"
 )
 
-# Optional but recommended
-OPTIONAL_PACKAGES=(
-    "swayidle"
+# Idle and lock screen
+IDLE_LOCK_PACKAGES=(
+    "hypridle"
     "swaylock-effects"
     "polkit-gnome"
 )
@@ -100,7 +100,7 @@ ALL_PACKAGES=(
     "${CORE_PACKAGES[@]}"
     "${SCREENSHOT_PACKAGES[@]}"
     "${UTILITY_PACKAGES[@]}"
-    "${OPTIONAL_PACKAGES[@]}"
+    "${IDLE_LOCK_PACKAGES[@]}"
     "${DEV_PACKAGES[@]}"
     "zsh"
     "fzf"
