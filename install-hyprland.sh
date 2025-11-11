@@ -80,7 +80,6 @@ IDLE_LOCK_PACKAGES=(
 DEV_PACKAGES=(
     "git"
     "stow"
-    "nvm"
 )
 
 # Terminal and shell
@@ -147,6 +146,37 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
     log_success "Oh My Zsh installed"
 else
     log_success "Oh My Zsh already installed"
+fi
+
+# ============================================================================
+# NVM INSTALLATION
+# ============================================================================
+
+if [ ! -d "$HOME/.nvm" ]; then
+    log_info "Installing NVM (Node Version Manager)..."
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+
+    # Source nvm for current session
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+    log_success "NVM installed"
+else
+    log_success "NVM already installed"
+    # Source nvm for current session
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+fi
+
+# Install Node.js via NVM
+if command -v nvm &> /dev/null; then
+    log_info "Installing Node.js v22 via NVM..."
+    nvm install 22
+    nvm use 22
+    nvm alias default 22
+    log_success "Node.js v22 installed and set as default"
+else
+    log_warning "NVM not available in current session. Please restart shell and run: nvm install 22"
 fi
 
 # ============================================================================

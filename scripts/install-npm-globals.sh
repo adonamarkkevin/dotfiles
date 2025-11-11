@@ -11,8 +11,30 @@ echo ""
 
 # Check if npm is available
 if ! command -v npm &> /dev/null; then
-    echo "✗ npm not found. Please install Node.js first."
-    exit 1
+    echo "✗ npm not found. Installing Node.js via NVM first..."
+    echo ""
+
+    # Install NVM if not present
+    if [ ! -d "$HOME/.nvm" ]; then
+        echo "Installing NVM..."
+        curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+    fi
+
+    # Source NVM
+    export NVM_DIR="$HOME/.nvm"
+    [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+    # Install Node.js
+    if command -v nvm &> /dev/null; then
+        echo "Installing Node.js v22..."
+        nvm install 22
+        nvm use 22
+        nvm alias default 22
+        echo "✓ Node.js installed"
+    else
+        echo "✗ Failed to load NVM. Please restart your shell and run this script again."
+        exit 1
+    fi
 fi
 
 echo "Current npm version: $(npm --version)"
