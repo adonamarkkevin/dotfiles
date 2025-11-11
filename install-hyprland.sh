@@ -122,6 +122,7 @@ done
 if [ ${#MISSING_PACKAGES[@]} -gt 0 ]; then
     log_info "The following packages need to be installed:"
     printf '%s\n' "${MISSING_PACKAGES[@]}" | sed 's/^/  - /'
+    echo ""
 
     read -p "Do you want to install these packages? (y/n) " -n 1 -r
     echo
@@ -129,34 +130,36 @@ if [ ${#MISSING_PACKAGES[@]} -gt 0 ]; then
         log_info "Installing packages..."
         if sudo pacman -S --needed --noconfirm "${MISSING_PACKAGES[@]}"; then
             log_success "Packages installed successfully"
+
+            # Verify critical packages are installed
+            log_info "Verifying critical packages..."
+            CRITICAL_PACKAGES=("hyprland" "waybar" "wofi" "kitty" "zsh" "git" "stow")
+            MISSING_CRITICAL=()
+
+            for pkg in "${CRITICAL_PACKAGES[@]}"; do
+                if ! pacman -Qi "$pkg" &> /dev/null; then
+                    MISSING_CRITICAL+=("$pkg")
+                fi
+            done
+
+            if [ ${#MISSING_CRITICAL[@]} -gt 0 ]; then
+                log_error "Critical packages failed to install: ${MISSING_CRITICAL[*]}"
+                log_error "Please try installing them manually: sudo pacman -S ${MISSING_CRITICAL[*]}"
+                exit 1
+            else
+                log_success "All critical packages verified"
+            fi
         else
             log_error "Package installation failed. Please check the errors above."
             exit 1
         fi
     else
         log_warning "Skipping package installation. Some features may not work."
+        log_warning "The script will likely fail. Press Ctrl+C to cancel or Enter to continue anyway."
+        read
     fi
 else
     log_success "All required packages are already installed"
-fi
-
-# Verify critical packages are installed
-log_info "Verifying critical packages..."
-CRITICAL_PACKAGES=("hyprland" "waybar" "wofi" "kitty" "zsh" "git" "stow")
-MISSING_CRITICAL=()
-
-for pkg in "${CRITICAL_PACKAGES[@]}"; do
-    if ! command -v "$pkg" &> /dev/null && ! pacman -Qi "$pkg" &> /dev/null; then
-        MISSING_CRITICAL+=("$pkg")
-    fi
-done
-
-if [ ${#MISSING_CRITICAL[@]} -gt 0 ]; then
-    log_error "Critical packages missing: ${MISSING_CRITICAL[*]}"
-    log_error "Installation cannot continue. Please install these packages manually."
-    exit 1
-else
-    log_success "All critical packages verified"
 fi
 
 # ============================================================================
