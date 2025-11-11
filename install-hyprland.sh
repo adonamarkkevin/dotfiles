@@ -240,77 +240,6 @@ else
 fi
 
 # ============================================================================
-# BACKUP EXISTING CONFIGS
-# ============================================================================
-
-log_info "Backing up existing configurations..."
-
-BACKUP_DIR="$HOME/.config-backup-$(date +%Y%m%d-%H%M%S)"
-mkdir -p "$BACKUP_DIR"
-
-# List of config directories to back up if they exist
-CONFIG_DIRS=(
-    ".config/hypr"
-    ".config/waybar"
-    ".config/wofi"
-    ".config/kitty"
-    ".config/nvim"
-    ".config/tmux"
-    ".config/ohmyposh"
-)
-
-# List of home directory files to back up
-HOME_FILES=(
-    ".zshrc"
-    ".gitconfig"
-    ".gitignore_global"
-)
-
-# Backup and remove config directories
-for dir in "${CONFIG_DIRS[@]}"; do
-    if [ -e "$HOME/$dir" ]; then
-        if [ -L "$HOME/$dir" ]; then
-            # It's a symlink, just remove it
-            log_info "Removing symlink: $dir"
-            rm -f "$HOME/$dir"
-        else
-            # It's a real directory/file, back it up and remove
-            log_info "Backing up and removing $dir..."
-            mkdir -p "$BACKUP_DIR/$(dirname $dir)"
-            cp -r "$HOME/$dir" "$BACKUP_DIR/$dir"
-            rm -rf "$HOME/$dir"
-            log_success "Backed up $dir to $BACKUP_DIR"
-        fi
-    fi
-done
-
-# Backup and remove home files
-for file in "${HOME_FILES[@]}"; do
-    if [ -e "$HOME/$file" ]; then
-        if [ -L "$HOME/$file" ]; then
-            # It's a symlink, just remove it
-            log_info "Removing symlink: $file"
-            rm -f "$HOME/$file"
-        else
-            # It's a real file, back it up and remove
-            log_info "Backing up and removing $file..."
-            cp "$HOME/$file" "$BACKUP_DIR/$file"
-            rm -f "$HOME/$file"
-            log_success "Backed up $file to $BACKUP_DIR"
-        fi
-    fi
-done
-
-if [ "$(ls -A $BACKUP_DIR 2>/dev/null)" ]; then
-    log_success "Backups created in: $BACKUP_DIR"
-else
-    log_info "No existing configs to backup"
-    rmdir "$BACKUP_DIR" 2>/dev/null || true
-fi
-
-log_success "All existing configs removed - ready for stow"
-
-# ============================================================================
 # STOW CONFIGURATION
 # ============================================================================
 
@@ -318,86 +247,15 @@ log_info "Setting up dotfiles with GNU Stow..."
 
 # Get the script's directory (dotfiles repo root)
 DOTFILES_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-cd "$DOTFILES_DIR"
 
-log_info "Dotfiles directory: $DOTFILES_DIR"
-
-# Create .stow-local-ignore file to exclude i3-specific files
-cat > .stow-local-ignore << 'EOF'
-# Ignore i3-specific configurations
-\.config/i3
-\.config/polybar
-
-# Ignore alacritty (using kitty instead)
-\.config/alacritty
-
-# Ignore installation scripts
-install-hyprland\.sh
-install\.sh
-
-# Ignore git files
-\.git
-\.gitignore
-\.gitmodules
-
-# Ignore documentation
-README\.md
-.*\.md$
-
-# Ignore other files
-swap_trackball_btn\.sh
-EOF
-
-log_success "Created .stow-local-ignore (excluding i3, polybar, alacritty)"
-
-# Stow the dotfiles
-log_info "Running stow to create symlinks..."
-
-# First, unstow any existing links to avoid conflicts
-log_info "Removing any existing stow symlinks..."
-stow -D . 2>/dev/null || true
-
-# Try to stow with verbose output
-log_info "Creating symlinks with stow..."
-if stow -v -t "$HOME" . 2>&1 | tee /tmp/stow-output.log; then
-    log_success "Dotfiles symlinked successfully!"
+# Run the separate stow script
+if bash "$DOTFILES_DIR/stow-dotfiles.sh"; then
+    log_success "Dotfiles setup complete!"
 else
-    log_error "Failed to stow dotfiles. Checking for conflicts..."
-
-    # Show the conflicts
-    if grep -q "existing target is" /tmp/stow-output.log; then
-        log_warning "Found existing files/directories that conflict:"
-        grep "existing target is" /tmp/stow-output.log | head -10
-        echo ""
-        log_info "These files need to be removed or backed up manually."
-        echo ""
-        read -p "Do you want to force remove conflicting files and try again? (y/n) " -n 1 -r
-        echo
-        if [[ $REPLY =~ ^[Yy]$ ]]; then
-            # Extract conflicting paths and remove them
-            grep "existing target is" /tmp/stow-output.log | sed 's/.*existing target is \(.*\) but.*/\1/' | while read file; do
-                if [ -e "$HOME/$file" ]; then
-                    log_warning "Removing: $HOME/$file"
-                    rm -rf "$HOME/$file"
-                fi
-            done
-
-            # Try stow again
-            log_info "Retrying stow..."
-            if stow -v -t "$HOME" .; then
-                log_success "Dotfiles symlinked successfully!"
-            else
-                log_error "Stow still failed. Please check /tmp/stow-output.log for details"
-                exit 1
-            fi
-        else
-            log_error "Cannot continue without resolving conflicts"
-            exit 1
-        fi
-    else
-        log_error "Stow failed for unknown reason. Check /tmp/stow-output.log"
-        exit 1
-    fi
+    log_error "Stow script failed. You can run it separately:"
+    echo "  cd $DOTFILES_DIR"
+    echo "  ./stow-dotfiles.sh"
+    exit 1
 fi
 
 # ============================================================================
