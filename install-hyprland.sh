@@ -127,13 +127,48 @@ if [ ${#MISSING_PACKAGES[@]} -gt 0 ]; then
     echo
     if [[ $REPLY =~ ^[Yy]$ ]]; then
         log_info "Installing packages..."
-        sudo pacman -S --needed "${MISSING_PACKAGES[@]}"
-        log_success "Packages installed successfully"
+        if sudo pacman -S --needed --noconfirm "${MISSING_PACKAGES[@]}"; then
+            log_success "Packages installed successfully"
+        else
+            log_error "Package installation failed. Please check the errors above."
+            exit 1
+        fi
     else
         log_warning "Skipping package installation. Some features may not work."
     fi
 else
     log_success "All required packages are already installed"
+fi
+
+# Verify critical packages are installed
+log_info "Verifying critical packages..."
+CRITICAL_PACKAGES=("hyprland" "waybar" "wofi" "kitty" "zsh" "git" "stow")
+MISSING_CRITICAL=()
+
+for pkg in "${CRITICAL_PACKAGES[@]}"; do
+    if ! command -v "$pkg" &> /dev/null && ! pacman -Qi "$pkg" &> /dev/null; then
+        MISSING_CRITICAL+=("$pkg")
+    fi
+done
+
+if [ ${#MISSING_CRITICAL[@]} -gt 0 ]; then
+    log_error "Critical packages missing: ${MISSING_CRITICAL[*]}"
+    log_error "Installation cannot continue. Please install these packages manually."
+    exit 1
+else
+    log_success "All critical packages verified"
+fi
+
+# ============================================================================
+# ZSH INSTALLATION (Must be before Oh My Zsh)
+# ============================================================================
+
+if ! command -v zsh &> /dev/null; then
+    log_info "Installing zsh..."
+    sudo pacman -S --needed --noconfirm zsh
+    log_success "Zsh installed"
+else
+    log_success "Zsh already installed"
 fi
 
 # ============================================================================
@@ -341,12 +376,17 @@ else
 fi
 
 # Set zsh as default shell if not already
-if [ "$SHELL" != "$(which zsh)" ]; then
-    log_info "Setting zsh as default shell..."
-    chsh -s $(which zsh)
-    log_success "Default shell changed to zsh (takes effect on next login)"
+if command -v zsh &> /dev/null; then
+    ZSH_PATH=$(which zsh)
+    if [ "$SHELL" != "$ZSH_PATH" ]; then
+        log_info "Setting zsh as default shell..."
+        chsh -s "$ZSH_PATH"
+        log_success "Default shell changed to zsh (takes effect on next login)"
+    else
+        log_success "Zsh is already the default shell"
+    fi
 else
-    log_success "Zsh is already the default shell"
+    log_warning "Zsh not found. Please install zsh first: sudo pacman -S zsh"
 fi
 
 # ============================================================================
