@@ -266,24 +266,38 @@ HOME_FILES=(
     ".gitignore_global"
 )
 
-# Backup config directories
+# Backup and remove config directories
 for dir in "${CONFIG_DIRS[@]}"; do
-    if [ -e "$HOME/$dir" ] && [ ! -L "$HOME/$dir" ]; then
-        log_info "Backing up $dir..."
-        mkdir -p "$BACKUP_DIR/$(dirname $dir)"
-        cp -r "$HOME/$dir" "$BACKUP_DIR/$dir"
-        rm -rf "$HOME/$dir"
-        log_success "Backed up $dir to $BACKUP_DIR"
+    if [ -e "$HOME/$dir" ]; then
+        if [ -L "$HOME/$dir" ]; then
+            # It's a symlink, just remove it
+            log_info "Removing symlink: $dir"
+            rm -f "$HOME/$dir"
+        else
+            # It's a real directory/file, back it up and remove
+            log_info "Backing up and removing $dir..."
+            mkdir -p "$BACKUP_DIR/$(dirname $dir)"
+            cp -r "$HOME/$dir" "$BACKUP_DIR/$dir"
+            rm -rf "$HOME/$dir"
+            log_success "Backed up $dir to $BACKUP_DIR"
+        fi
     fi
 done
 
-# Backup home files
+# Backup and remove home files
 for file in "${HOME_FILES[@]}"; do
-    if [ -e "$HOME/$file" ] && [ ! -L "$HOME/$file" ]; then
-        log_info "Backing up $file..."
-        cp "$HOME/$file" "$BACKUP_DIR/$file"
-        rm -f "$HOME/$file"
-        log_success "Backed up $file to $BACKUP_DIR"
+    if [ -e "$HOME/$file" ]; then
+        if [ -L "$HOME/$file" ]; then
+            # It's a symlink, just remove it
+            log_info "Removing symlink: $file"
+            rm -f "$HOME/$file"
+        else
+            # It's a real file, back it up and remove
+            log_info "Backing up and removing $file..."
+            cp "$HOME/$file" "$BACKUP_DIR/$file"
+            rm -f "$HOME/$file"
+            log_success "Backed up $file to $BACKUP_DIR"
+        fi
     fi
 done
 
@@ -291,8 +305,10 @@ if [ "$(ls -A $BACKUP_DIR 2>/dev/null)" ]; then
     log_success "Backups created in: $BACKUP_DIR"
 else
     log_info "No existing configs to backup"
-    rmdir "$BACKUP_DIR"
+    rmdir "$BACKUP_DIR" 2>/dev/null || true
 fi
+
+log_success "All existing configs removed - ready for stow"
 
 # ============================================================================
 # STOW CONFIGURATION
@@ -338,14 +354,50 @@ log_success "Created .stow-local-ignore (excluding i3, polybar, alacritty)"
 log_info "Running stow to create symlinks..."
 
 # First, unstow any existing links to avoid conflicts
+log_info "Removing any existing stow symlinks..."
 stow -D . 2>/dev/null || true
 
-# Now stow everything except what's in .stow-local-ignore
-if stow -v -t "$HOME" .; then
+# Try to stow with verbose output
+log_info "Creating symlinks with stow..."
+if stow -v -t "$HOME" . 2>&1 | tee /tmp/stow-output.log; then
     log_success "Dotfiles symlinked successfully!"
 else
-    log_error "Failed to stow dotfiles. Please check for conflicts."
-    exit 1
+    log_error "Failed to stow dotfiles. Checking for conflicts..."
+
+    # Show the conflicts
+    if grep -q "existing target is" /tmp/stow-output.log; then
+        log_warning "Found existing files/directories that conflict:"
+        grep "existing target is" /tmp/stow-output.log | head -10
+        echo ""
+        log_info "These files need to be removed or backed up manually."
+        echo ""
+        read -p "Do you want to force remove conflicting files and try again? (y/n) " -n 1 -r
+        echo
+        if [[ $REPLY =~ ^[Yy]$ ]]; then
+            # Extract conflicting paths and remove them
+            grep "existing target is" /tmp/stow-output.log | sed 's/.*existing target is \(.*\) but.*/\1/' | while read file; do
+                if [ -e "$HOME/$file" ]; then
+                    log_warning "Removing: $HOME/$file"
+                    rm -rf "$HOME/$file"
+                fi
+            done
+
+            # Try stow again
+            log_info "Retrying stow..."
+            if stow -v -t "$HOME" .; then
+                log_success "Dotfiles symlinked successfully!"
+            else
+                log_error "Stow still failed. Please check /tmp/stow-output.log for details"
+                exit 1
+            fi
+        else
+            log_error "Cannot continue without resolving conflicts"
+            exit 1
+        fi
+    else
+        log_error "Stow failed for unknown reason. Check /tmp/stow-output.log"
+        exit 1
+    fi
 fi
 
 # ============================================================================
