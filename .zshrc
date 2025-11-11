@@ -7,12 +7,9 @@ export ZSH="$HOME/.oh-my-zsh"
 export PATH=$PATH:/.nvm/versions/node/v20.17.0/bin
 export PATH="$HOME/.local/share/nvim/mason/bin:$PATH"
 
-ZSH_THEME="steeef"
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-# ZSH_THEME="powerlevel10k/powerlevel10k"
+# Note: ZSH_THEME is not set here because we use oh-my-posh for prompt theming
+# Oh My Zsh is still used for plugins and functionality
+# ZSH_THEME="steeef"  # Not needed - oh-my-posh handles the prompt
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load

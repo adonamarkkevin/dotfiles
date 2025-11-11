@@ -1,0 +1,101 @@
+/* Wofi Style - Kanagawa Theme */
+
+* {
+    font-family: "JetBrainsMonoML Nerd Font";
+    font-size: 14px;
+}
+
+/* Main window */
+window {
+    margin: 0px;
+    border: 2px solid #717C7C; /* riverGray */
+    background-color: #1F1F28; /* mountainBase */
+    border-radius: 8px;
+}
+
+/* Search input box */
+#input {
+    margin: 10px;
+    padding: 12px;
+    border: 2px solid #54546D; /* stormGray */
+    background-color: #2A2A37; /* winterNight */
+    color: #DCD7BA; /* fujiWhite */
+    border-radius: 6px;
+    font-size: 16px;
+}
+
+#input:focus {
+    border: 2px solid #7E9CD8; /* waveBlue */
+}
+
+/* Placeholder text */
+#input > placeholder {
+    color: #717C7C; /* riverGray */
+}
+
+/* Inner box containing results */
+#inner-box {
+    margin: 5px;
+    padding: 10px;
+    background-color: transparent;
+}
+
+/* Outer box */
+#outer-box {
+    margin: 5px;
+    padding: 10px;
+    background-color: transparent;
+}
+
+/* Scrollbar */
+#scroll {
+    margin: 0px;
+    padding: 0px;
+}
+
+/* Each item in the list */
+#entry {
+    padding: 10px;
+    margin: 4px;
+    border-radius: 6px;
+    background-color: transparent;
+    color: #DCD7BA; /* fujiWhite */
+}
+
+/* Hovered item */
+#entry:selected {
+    background-color: #2A2A37; /* winterNight */
+    border-left: 3px solid #7E9CD8; /* waveBlue */
+}
+
+/* Currently selected/focused item */
+#entry:selected:focus {
+    background-color: #363646; /* deepWater */
+    border-left: 3px solid #E6C384; /* autumnYellow */
+    color: #E6C384; /* autumnYellow */
+}
+
+/* Application icon */
+#entry image {
+    margin-right: 10px;
+}
+
+/* Application text/name */
+#entry label {
+    color: inherit;
+}
+
+/* Text that matches search query */
+#text {
+    color: inherit;
+}
+
+/* Matched search text highlighting */
+#text:selected {
+    color: #E6C384; /* autumnYellow */
+}
+
+/* No results message */
+#entry:nth-child(1) {
+    color: #DCD7BA;
+}
