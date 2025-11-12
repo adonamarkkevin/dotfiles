@@ -52,6 +52,33 @@ Essential tools and applications for system setup, organized by category.
 
 ---
 
+## 🔊 Audio System
+
+### PipeWire (Modern Audio Server)
+- `pipewire` - Core PipeWire multimedia framework
+- `pipewire-pulse` - PulseAudio replacement/compatibility
+- `pipewire-alsa` - ALSA compatibility
+- `pipewire-jack` - JACK audio compatibility
+- `wireplumber` - PipeWire session manager
+
+**Installation:**
+```bash
+sudo pacman -S pipewire pipewire-pulse pipewire-alsa pipewire-jack wireplumber
+```
+
+**Enable services:**
+```bash
+systemctl --user enable --now pipewire.service pipewire-pulse.service wireplumber.service
+```
+
+**Notes:**
+- PipeWire provides full PulseAudio compatibility - all `pactl` commands work
+- Volume controls in Hyprland and Waybar use `pactl` (works seamlessly)
+- Better performance and lower latency than PulseAudio
+- Required for Wayland/Hyprland setups
+
+---
+
 ## 🎨 GUI Applications
 
 ### Media & Creative
@@ -122,17 +149,21 @@ sudo pacman -S --needed htop eza fd ripgrep zoxide bat fzf jq curl wget \
 # 2. Install development tools
 sudo pacman -S --needed base-devel git python python-pip go jdk-openjdk
 
-# 3. Install GUI applications
+# 3. Install PipeWire audio system
+sudo pacman -S --needed pipewire pipewire-pulse pipewire-alsa pipewire-jack wireplumber
+systemctl --user enable --now pipewire.service pipewire-pulse.service wireplumber.service
+
+# 4. Install GUI applications
 sudo pacman -S --needed gimp obs-studio obsidian
 
-# 4. Setup Node.js (via nvm from dotfiles)
+# 5. Setup Node.js (via nvm from dotfiles)
 nvm install 22
 nvm use 22
 
-# 5. Install npm global packages
+# 6. Install npm global packages
 npm install -g @anthropic-ai/claude-code corepack yarn
 ```
 
 ---
 
-**Last Updated**: 2025-11-12
+**Last Updated**: 2025-11-13
