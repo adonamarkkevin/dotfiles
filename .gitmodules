@@ -1,9 +1,6 @@
 [submodule ".config/nvim"]
 	path = .config/nvim
 	url = https://github.com/adonamarkkevin/lazy-vim-config
-[submodule "powerlevel10k"]
-	path = powerlevel10k
-	url = https://github.com/romkatv/powerlevel10k
 [submodule ".oh-my-zsh"]
 	path = .oh-my-zsh
 	url = https://github.com/ohmyzsh/ohmyzsh
@@ -19,18 +16,15 @@
 [submodule ".config/tmux/plugins/catppuccin-tmux"]
 	path = .config/tmux/plugins/catppuccin-tmux
 	url = https://github.com/dreamsofcode-io/catppuccin-tmux.git
-[submodule ".config/tmux/tmux-yank"]
+[submodule ".config/tmux/plugins/tmux-yank"]
 	path = .config/tmux/plugins/tmux-yank
 	url = https://github.com/tmux-plugins/tmux-yank.git
 [submodule ".config/tmux/plugins/tmux-resurrect"]
 	path = .config/tmux/plugins/tmux-resurrect
 	url = https://github.com/tmux-plugins/tmux-resurrect.git
-[submodule ".config/tmux/tmux-continuum"]
+[submodule ".config/tmux/plugins/tmux-continuum"]
 	path = .config/tmux/plugins/tmux-continuum
 	url = https://github.com/tmux-plugins/tmux-continuum.git
-[submodule ".password-store"]
-	path = .password-store
-	url = https://github.com/adonamarkkevin/pass-store.git
 [submodule "fzf-git"]
 	path = fzf-git
 	url = https://github.com/junegunn/fzf-git.sh.git

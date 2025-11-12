@@ -1,0 +1,31 @@
+# Ignore i3-specific configurations
+\.config/i3
+\.config/polybar
+
+# Ignore alacritty (using kitty instead)
+\.config/alacritty
+
+# Ignore installation scripts
+install-hyprland\.sh
+install\.sh
+stow-dotfiles\.sh
+
+# Ignore scripts directory
+scripts
+
+# Ignore git files
+\.git
+\.gitignore
+\.gitmodules
+
+# Ignore documentation
+README\.md
+.*\.md$
+CLAUDE\.md
+REQUIRED_APPS\.md
+
+# Ignore tmp directory
+tmp
+
+# Ignore other files
+swap_trackball_btn\.sh

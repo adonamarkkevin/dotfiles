@@ -136,7 +136,7 @@ _fzf_compgen_dir(){
   fd --type=d --hidden --exclude .git . "$1"
 }
 
-source ~/dotfiles/fzf-git/fzf-git.sh
+source ~/.fzf-git/fzf-git.sh
 
 show_file_or_dir_preview="if [ -d {} ]; then eza --tree --color=always {} | head -200; else bat -n --color=always --line-range :500 {}; fi"
 
@@ -160,7 +160,7 @@ _fzf_comprun() {
 
 if [[ -n $TMUX ]]; then
     # Force reload fzf keybindings inside tmux
-    source ~/dotfiles/fzf-git/fzf-git.sh
+    source ~/.fzf-git/fzf-git.sh
 
     # Only rebind the ones that conflict with vim-tmux-navigator
     bindkey "^Gh" fzf-git-hashes-widget    # Changed from ^G^H
