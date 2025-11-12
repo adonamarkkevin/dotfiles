@@ -53,12 +53,25 @@ check_file() {
 check_symlink() {
     local file=$1
     local name=$2
+
+    # Check if file/dir itself is a symlink
     if [ -L "$file" ]; then
         echo -e "${GREEN}✓${NC} $name ${BLUE}→ $(readlink $file)${NC}"
         INSTALLED+=("$name")
         return 0
-    elif [ -e "$file" ]; then
-        echo -e "${YELLOW}⚠${NC} $name ${YELLOW}(exists but not a symlink)${NC}"
+    fi
+
+    # Check if any parent directory is a symlink (common with stow)
+    local dir=$(dirname "$file")
+    if [ -L "$dir" ]; then
+        echo -e "${GREEN}✓${NC} $name ${BLUE}(via symlinked directory: $dir → $(readlink $dir))${NC}"
+        INSTALLED+=("$name")
+        return 0
+    fi
+
+    # File exists but not symlinked
+    if [ -e "$file" ]; then
+        echo -e "${YELLOW}⚠${NC} $name ${YELLOW}(exists but not stowed)${NC}"
         return 1
     else
         echo -e "${RED}✗${NC} $name ${YELLOW}(missing)${NC}"
